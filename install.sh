@@ -1,30 +1,30 @@
 #!/bin/sh
-# trivuedev public installer
-# Downloads a release binary from github.com/orashus/trivuedev and verifies checksums.
+# tagviu public installer
+# Downloads a release binary from github.com/orashus/tagviu and verifies checksums.
 #
 # Usage:
-#   curl -fsSL https://raw.githubusercontent.com/orashus/trivuedev/main/install.sh | sh
-#   curl -fsSL https://raw.githubusercontent.com/orashus/trivuedev/main/install.sh | TRIVUEDEV_VERSION=v0.1.0 sh
-#   TRIVUEDEV_INSTALL_DIR="$HOME/.local/bin" sh install.sh
+#   curl -fsSL https://raw.githubusercontent.com/orashus/tagviu/main/install.sh | sh
+#   curl -fsSL https://raw.githubusercontent.com/orashus/tagviu/main/install.sh | TAGVIU_VERSION=v0.1.0 sh
+#   TAGVIU_INSTALL_DIR="$HOME/.local/bin" sh install.sh
 #
 # Inspect before running:
-#   curl -fsSL https://raw.githubusercontent.com/orashus/trivuedev/main/install.sh -o install.sh
+#   curl -fsSL https://raw.githubusercontent.com/orashus/tagviu/main/install.sh -o install.sh
 #   less install.sh
 #   sh install.sh
 
 set -eu
 
-REPO="orashus/trivuedev"
+REPO="orashus/tagviu"
 BASE_URL="https://github.com/${REPO}/releases"
-INSTALL_DIR="${TRIVUEDEV_INSTALL_DIR:-${HOME}/.local/bin}"
-VERSION="${TRIVUEDEV_VERSION:-}"
+INSTALL_DIR="${TAGVIU_INSTALL_DIR:-${HOME}/.local/bin}"
+VERSION="${TAGVIU_VERSION:-}"
 
 say() {
   printf '%s\n' "$*"
 }
 
 err() {
-  printf 'trivuedev install: %s\n' "$*" >&2
+  printf 'tagviu install: %s\n' "$*" >&2
   exit 1
 }
 
@@ -53,7 +53,7 @@ detect_arch() {
 curl_github() {
   # GitHub rejects or rate-limits clients without a User-Agent.
   curl -fsSL --retry 3 --retry-delay 1 \
-    -H "User-Agent: trivuedev-install" \
+    -H "User-Agent: tagviu-install" \
     "$@"
 }
 
@@ -130,14 +130,14 @@ main() {
     *) VERSION="v${VERSION}" ;;
   esac
 
-  asset="trivuedev_${VERSION}_${OS}_${ARCH}.tar.gz"
+  asset="tagviu_${VERSION}_${OS}_${ARCH}.tar.gz"
   url="${BASE_URL}/download/${VERSION}/${asset}"
   sums_url="${BASE_URL}/download/${VERSION}/checksums.txt"
 
   tmp="$(mktemp -d)"
   trap 'rm -rf "$tmp"' EXIT INT TERM
 
-  say "Installing trivuedev ${VERSION} (${OS}/${ARCH})"
+  say "Installing tagviu ${VERSION} (${OS}/${ARCH})"
   say "Download: ${url}"
 
   curl -fL --retry 3 --retry-delay 1 -o "${tmp}/${asset}" "$url" || err "download failed: ${url}"
@@ -146,11 +146,11 @@ main() {
   verify_checksum "${tmp}/${asset}" "${tmp}/checksums.txt"
 
   tar -xzf "${tmp}/${asset}" -C "$tmp"
-  bin_path="${tmp}/trivuedev_${VERSION}_${OS}_${ARCH}/trivuedev"
-  [ -f "$bin_path" ] || err "archive did not contain trivuedev binary at expected path"
+  bin_path="${tmp}/tagviu_${VERSION}_${OS}_${ARCH}/tagviu"
+  [ -f "$bin_path" ] || err "archive did not contain tagviu binary at expected path"
 
   mkdir -p "$INSTALL_DIR"
-  dest="${INSTALL_DIR}/trivuedev"
+  dest="${INSTALL_DIR}/tagviu"
   mv "$bin_path" "$dest"
   chmod 755 "$dest"
 
@@ -163,7 +163,7 @@ main() {
   fi
 
   say ""
-  say "Try: trivuedev --help"
+  say "Try: tagviu --help"
 }
 
 main "$@"

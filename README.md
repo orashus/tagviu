@@ -1,25 +1,25 @@
-# trivuedev
+# tagviu
 
-`trivuedev` is distributed as a **precompiled native executable**. The source repository is private, but the release binaries and installation scripts are publicly available from this `orashus/trivuedev` distribution repository.
+`tagviu` is distributed as a **precompiled native executable**. The source repository is private, but the release binaries and installation scripts are publicly available from this `orashus/tagviu` distribution repository.
 
 This repository does **not** contain the Go source code. It hosts installation scripts and GitHub Releases only.
 
 ## Install (macOS / Linux)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/orashus/trivuedev/main/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/orashus/tagviu/main/install.sh | sh
 ```
 
 Pinned version:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/orashus/trivuedev/main/install.sh | TRIVUEDEV_VERSION=v0.1.0 sh
+curl -fsSL https://raw.githubusercontent.com/orashus/tagviu/main/install.sh | TAGVIU_VERSION=v0.1.0 sh
 ```
 
 Custom install directory:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/orashus/trivuedev/main/install.sh | TRIVUEDEV_INSTALL_DIR="$HOME/.local/bin" sh
+curl -fsSL https://raw.githubusercontent.com/orashus/tagviu/main/install.sh | TAGVIU_INSTALL_DIR="$HOME/.local/bin" sh
 ```
 
 ### Inspect before running
@@ -27,31 +27,31 @@ curl -fsSL https://raw.githubusercontent.com/orashus/trivuedev/main/install.sh |
 Piping a remote script to `sh` requires trusting this repository's installer. Prefer reviewing it first:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/orashus/trivuedev/main/install.sh -o install.sh
+curl -fsSL https://raw.githubusercontent.com/orashus/tagviu/main/install.sh -o install.sh
 less install.sh
 sh install.sh
 ```
 
-The installer downloads the matching release archive, verifies `checksums.txt`, then installs `trivuedev` to `~/.local/bin` by default.
+The installer downloads the matching release archive, verifies `checksums.txt`, then installs `tagviu` to `~/.local/bin` by default.
 
 ## Install (Windows)
 
 ```powershell
-irm https://raw.githubusercontent.com/orashus/trivuedev/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/orashus/tagviu/main/install.ps1 | iex
 ```
 
 Pinned version / custom directory:
 
 ```powershell
-$env:TRIVUEDEV_VERSION = "v0.1.0"
-$env:TRIVUEDEV_INSTALL_DIR = "$env:LOCALAPPDATA\trivuedev\bin"
-irm https://raw.githubusercontent.com/orashus/trivuedev/main/install.ps1 | iex
+$env:TAGVIU_VERSION = "v0.1.0"
+$env:TAGVIU_INSTALL_DIR = "$env:LOCALAPPDATA\tagviu\bin"
+irm https://raw.githubusercontent.com/orashus/tagviu/main/install.ps1 | iex
 ```
 
 Inspect before running:
 
 ```powershell
-Invoke-WebRequest https://raw.githubusercontent.com/orashus/trivuedev/main/install.ps1 -OutFile install.ps1
+Invoke-WebRequest https://raw.githubusercontent.com/orashus/tagviu/main/install.ps1 -OutFile install.ps1
 notepad install.ps1
 .\install.ps1
 ```
@@ -60,16 +60,16 @@ notepad install.ps1
 
 Browse releases:
 
-https://github.com/orashus/trivuedev/releases
+https://github.com/orashus/tagviu/releases
 
 Archives look like:
 
 ```text
-trivuedev_v0.1.0_darwin_arm64.tar.gz
-trivuedev_v0.1.0_darwin_amd64.tar.gz
-trivuedev_v0.1.0_linux_arm64.tar.gz
-trivuedev_v0.1.0_linux_amd64.tar.gz
-trivuedev_v0.1.0_windows_amd64.zip
+tagviu_v0.1.0_darwin_arm64.tar.gz
+tagviu_v0.1.0_darwin_amd64.tar.gz
+tagviu_v0.1.0_linux_arm64.tar.gz
+tagviu_v0.1.0_linux_amd64.tar.gz
+tagviu_v0.1.0_windows_amd64.zip
 checksums.txt
 ```
 
@@ -78,27 +78,27 @@ Verify the SHA-256 of your archive against `checksums.txt` before running the bi
 ## Usage
 
 ```bash
-# Copy the secret from Trivue Dashboard → Developer → View
-trivuedev login <secret>
-trivuedev whoami
-trivuedev http://localhost:3000
-trivuedev http://localhost:3000 --json
-trivuedev https://orashus.com
-trivuedev https://orashus.com --json
-trivuedev https://orashus.com --save
-trivuedev mcp
-trivuedev logout
+# Copy the secret from Tagviu Dashboard → Developer → View
+tagviu login <secret>
+tagviu whoami
+tagviu http://localhost:3000
+tagviu http://localhost:3000 --json
+tagviu https://orashus.com
+tagviu https://orashus.com --json
+tagviu https://orashus.com --save
+tagviu mcp
+tagviu logout
 ```
 
 Optional API override:
 
 ```bash
-export TRIVUE_API_URL=http://localhost:3000
+export TAGVIU_API_URL=http://localhost:3000
 # Optional: environment secret (overrides credentials.json)
-export TRIVUE_API_KEY=api_…
+export TAGVIU_API_KEY=api_…
 ```
 
-Default API: `https://trivue.orashus.com`
+Default API: `https://tagviu.orashus.com`
 
 ## Supported platforms
 
@@ -110,6 +110,6 @@ Default API: `https://trivue.orashus.com`
 
 ## What this CLI does
 
-Fetches localhost HTML on your machine and submits it to Trivue, or inspects a public URL with `POST /api/inspect` (`--save` creates a LocalPreview). Production Trivue never fetches your localhost URL.
+Fetches localhost HTML on your machine and submits it to Tagviu, or inspects a public URL with `POST /api/inspect` (`--save` creates a LocalPreview). Production Tagviu never fetches your localhost URL.
 
-Local MCP (stdio): `trivuedev mcp` (`TRIVUE_API_KEY` or `credentials.json`; `inspect_local_url` + `inspect_remote_url`) introduced in `v1.1.0`.
+Local MCP (stdio): `tagviu mcp` (`TAGVIU_API_KEY` or `credentials.json`; `inspect_local_url` + `inspect_remote_url`) introduced in `v1.1.0`.

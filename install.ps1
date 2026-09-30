@@ -1,36 +1,36 @@
-# trivuedev public installer (Windows)
-# Downloads a release binary from github.com/orashus/trivuedev and verifies checksums.
+# tagviu public installer (Windows)
+# Downloads a release binary from github.com/orashus/tagviu and verifies checksums.
 #
 # Usage:
-#   irm https://raw.githubusercontent.com/orashus/trivuedev/main/install.ps1 | iex
-#   $env:TRIVUEDEV_VERSION = "v0.1.0"; irm https://raw.githubusercontent.com/orashus/trivuedev/main/install.ps1 | iex
-#   $env:TRIVUEDEV_INSTALL_DIR = "$env:LOCALAPPDATA\trivuedev\bin"; .\install.ps1
+#   irm https://raw.githubusercontent.com/orashus/tagviu/main/install.ps1 | iex
+#   $env:TAGVIU_VERSION = "v0.1.0"; irm https://raw.githubusercontent.com/orashus/tagviu/main/install.ps1 | iex
+#   $env:TAGVIU_INSTALL_DIR = "$env:LOCALAPPDATA\tagviu\bin"; .\install.ps1
 #
 # Inspect before running:
-#   Invoke-WebRequest https://raw.githubusercontent.com/orashus/trivuedev/main/install.ps1 -OutFile install.ps1
+#   Invoke-WebRequest https://raw.githubusercontent.com/orashus/tagviu/main/install.ps1 -OutFile install.ps1
 #   notepad install.ps1
 #   .\install.ps1
 
 $ErrorActionPreference = "Stop"
 
-$Repo = "orashus/trivuedev"
+$Repo = "orashus/tagviu"
 $BaseUrl = "https://github.com/$Repo/releases"
 
 function Get-InstallDir {
-    if ($env:TRIVUEDEV_INSTALL_DIR -and $env:TRIVUEDEV_INSTALL_DIR.Trim() -ne "") {
-        return $env:TRIVUEDEV_INSTALL_DIR.Trim()
+    if ($env:TAGVIU_INSTALL_DIR -and $env:TAGVIU_INSTALL_DIR.Trim() -ne "") {
+        return $env:TAGVIU_INSTALL_DIR.Trim()
     }
-    return Join-Path $env:LOCALAPPDATA "trivuedev\bin"
+    return Join-Path $env:LOCALAPPDATA "tagviu\bin"
 }
 
 function Get-Version {
-    if ($env:TRIVUEDEV_VERSION -and $env:TRIVUEDEV_VERSION.Trim() -ne "") {
-        $v = $env:TRIVUEDEV_VERSION.Trim()
+    if ($env:TAGVIU_VERSION -and $env:TAGVIU_VERSION.Trim() -ne "") {
+        $v = $env:TAGVIU_VERSION.Trim()
         if (-not $v.StartsWith("v")) { $v = "v$v" }
         return $v
     }
     $headers = @{
-        "User-Agent" = "trivuedev-install"
+        "User-Agent" = "tagviu-install"
         "Accept"     = "application/json"
     }
     try {
@@ -44,7 +44,7 @@ function Get-Version {
     }
 
     $apiHeaders = @{
-        "User-Agent" = "trivuedev-install"
+        "User-Agent" = "tagviu-install"
         "Accept"     = "application/vnd.github+json"
     }
     $release = Invoke-RestMethod -Uri "https://api.github.com/repos/$Repo/releases/latest" -Headers $apiHeaders
@@ -92,11 +92,11 @@ if ($goArch -ne "amd64") {
 
 $version = Get-Version
 $installDir = Get-InstallDir
-$asset = "trivuedev_${version}_windows_amd64.zip"
+$asset = "tagviu_${version}_windows_amd64.zip"
 $url = "$BaseUrl/download/$version/$asset"
 $sumsUrl = "$BaseUrl/download/$version/checksums.txt"
 
-Write-Host "Installing trivuedev $version (windows/amd64)"
+Write-Host "Installing tagviu $version (windows/amd64)"
 Write-Host "Download: $url"
 
 $tmp = New-Item -ItemType Directory -Path ([System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), [System.Guid]::NewGuid().ToString("N")))
@@ -109,13 +109,13 @@ try {
     Assert-Checksum -ArchivePath $archive -ChecksumsPath $checksums
 
     Expand-Archive -Path $archive -DestinationPath $tmp.FullName -Force
-    $bin = Get-ChildItem -Path $tmp.FullName -Recurse -Filter "trivuedev.exe" | Select-Object -First 1
+    $bin = Get-ChildItem -Path $tmp.FullName -Recurse -Filter "tagviu.exe" | Select-Object -First 1
     if (-not $bin) {
-        throw "Archive did not contain trivuedev.exe"
+        throw "Archive did not contain tagviu.exe"
     }
 
     New-Item -ItemType Directory -Force -Path $installDir | Out-Null
-    $dest = Join-Path $installDir "trivuedev.exe"
+    $dest = Join-Path $installDir "tagviu.exe"
     Copy-Item -Force -Path $bin.FullName -Destination $dest
 
     Write-Host "Installed to $dest"
@@ -129,7 +129,7 @@ try {
     }
 
     Write-Host ""
-    Write-Host "Try: trivuedev --help"
+    Write-Host "Try: tagviu --help"
 }
 finally {
     Remove-Item -Recurse -Force $tmp.FullName -ErrorAction SilentlyContinue
