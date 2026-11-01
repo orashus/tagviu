@@ -98,7 +98,7 @@ export TAGVIU_API_URL=http://localhost:3000
 export TAGVIU_API_KEY=api_…
 ```
 
-Default API: `https://tagviu.orashus.com`
+Default API: `https://tagviu.com`
 
 ## Supported platforms
 
